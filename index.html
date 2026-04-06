@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro-Pose: Unpaired Full-Body Portrait Synthesis via Canonical UV Maps</title>
+    <link rel="stylesheet" href="static/css/style.css?v=202">
+    <link rel="stylesheet" href="static/css/carousel.css?v=202">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Pro-Pose: Unpaired Full-Body Portrait Synthesis via Canonical UV Maps</h1>
+            <div class="authors">
+                <span class="author"><a href="https://sandeep-sm.github.io/">Sandeep Mishra</a><sup>1</sup></span>,
+                <span class="author"><a href="https://www.yasamin.page/">Yasamin Jafarian</a><sup>2</sup></span>,
+                <span class="author"><a href="https://scholar.google.com/citations?user=3Rf3Q7UAAAAJ&hl=en">Andreas Lugmayr</a><sup>2</sup></span>,
+                <span class="author"><a href="http://www.svcl.ucsd.edu/people/yingwei/">Yingwei Li</a><sup>2</sup></span>,
+                <span class="author"><a href="https://www.linkedin.com/in/varsha-r/">Varsha Ramakrishnan</a><sup>2</sup></span>,
+                <span class="author"><a href="https://www.linkedin.com/in/srivatsan-varadharajan-9a570818/">Srivatsan Varadharajan</a><sup>2</sup></span>,
+                <span class="author"><a href="https://www.ece.utexas.edu/people/faculty/alan-bovik">Alan C. Bovik</a><sup>1</sup></span>,
+                <span class="author"><a href="https://www.irakemelmacher.com/">Ira Kemelmacher-Shlizerman</a><sup>2</sup></span>
+            </div>
+            <div class="affiliations">
+                <span><sup>1</sup>The University of Texas at Austin</span>,
+                <span><sup>2</sup>Google</span>
+            </div>
+
+            <div class="links">
+                <a href="https://arxiv.org/abs/2512.17143" class="btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                <a href="#" class="btn disabled" title="Coming Soon"><i class="fab fa-github"></i> Code</a>
+                <a href="#" class="btn disabled" title="Coming Soon"><i class="fas fa-database"></i> Dataset</a>
+            </div>
+        </header>
+
+        <section class="teaser">
+            <img src="static/images/teaser.png" alt="Teaser Image" style="width: 100%; object-fit: cover;">
+            <p class="caption">
+                <strong>Pro-Pose Canonicalization and Downstream Virtual Try-On.</strong> Given a single in-the-wild photo (left), Pro-Pose synthesizes high-fidelity, pose-controllable avatars (middle) driven by arbitrary SMPL-X poses. By canonicalizing the subject into a minimal black outfit, our method preserves the user's visible identity &mdash; facial features, skin textures, and body shape &mdash; while stripping away the occlusions of the original clothing. This standardized representation provides an optimal, clean geometric canvas for downstream tasks like <strong>Virtual Try-On</strong> (right).
+            </p>
+        </section>
+
+        <!-- Tab navigation bar -->
+        <nav class="tab-bar" id="tab-bar">
+            <button class="tab-btn tab-active" data-tab="abstract">Abstract</button>
+            <button class="tab-btn" data-tab="results">Results</button>
+            <button class="tab-btn" data-tab="method">Method</button>
+            <button class="tab-btn" data-tab="identity-analysis">Identity Analysis</button>
+            <button class="tab-btn" data-tab="citation">Citation</button>
+        </nav>
+
+        <section class="abstract section tab-panel tab-visible" data-tab="abstract">
+            <h2 class="section-title">Abstract</h2>
+            <p>
+                Photographs of people taken by professional photographers typically present the person in beautiful lighting, with an interesting pose, and flattering quality. This is unlike common photos people can take of themselves. In this paper, we explore how to create a <strong>"professional"</strong> version of a person's photograph, i.e., in a chosen pose, in a simple environment, with good lighting, and <strong>standard black top/bottom clothing</strong>. A key challenge is to preserve the person's unique identity, face and body features while transforming the photo. If there would exist a large paired dataset of the same person photographed both “in the wild” and by a professional photographer, the problem would potentially be easier to solve. However, such data does not exist, especially for a large variety of identities. 
+            </p>
+            <p>
+                To that end, we propose two key insights: 1) Our method transforms the input photo and person’s face to a <strong>canonical UV space</strong>, which is further coupled with <strong>Donor-based UV Reposing</strong> to model occlusions and novel view synthesis. Operating in UV space allows us to leverage existing unpaired datasets. 2)  We personalize the output photo via <strong>multi-image finetuning</strong>. Our approach yields high-quality, reposed portraits and achieves strong qualitative and quantitative performance on real-world imagery.
+            </p>
+        </section>
+
+
+
+        <section class="results section tab-panel" data-tab="results">
+            <h2 class="section-title">Results</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 30px auto; font-weight: bold;">
+                We compare our method against state-of-the-art baselines including Gemini 2.5 Flash Image on both in-domain (DeepFashion) and out-of-domain (WPose) datasets. All Pro-Pose results are zero-shot (without test-time fine-tuning).
+            </p>
+
+            <div class="instruction-box">
+                <p style="margin-bottom: 5px;">Qualitative results demonstrating the effectiveness of Pro-Pose on real-world imagery.</p>
+                <p style="margin-top: 5px;">
+                    <i class="fas fa-arrows-alt-h" style="color: #4285f4; margin-right: 5px;"></i> <strong>Navigate:</strong> Use arrows or click side cards to browse samples. 
+                    &emsp;
+                    <i class="fas fa-play" style="color: #4285f4; margin-right: 5px;"></i> <strong>Compare:</strong> The output column cycles through models automatically.
+                </p>
+            </div>
+
+            <div class="orbit-stage">
+                <!-- 3D perspective container -->
+                <div class="orbit-viewport">
+                    <div class="orbit-ring" id="orbit-ring">
+                        <!-- JS populates pair cards here -->
+                    </div>
+                </div>
+
+                <!-- Pair nav arrows -->
+                <button class="orbit-nav orbit-prev" onclick="showcaseNav(-1)">&#10094;</button>
+                <button class="orbit-nav orbit-next" onclick="showcaseNav(1)">&#10095;</button>
+
+                <!-- Method controls (below the stage) -->
+                <div class="orbit-controls">
+                    <div class="orbit-progress" id="showcase-progress">
+                        <div class="orbit-progress-fill" id="showcase-progress-fill"></div>
+                    </div>
+                    <div class="orbit-methods" id="showcase-methods">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Pair indicators -->
+                <div class="orbit-indicators" id="showcase-indicators">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="results-charts">
+                <div class="dataset-tabs">
+                    <button class="dataset-tab" onclick="switchDataset('deepfashion')">DeepFashion (In-Domain)</button>
+                    <button class="dataset-tab active" onclick="switchDataset('wpose')">WPose (Out-of-Domain)</button>
+                </div>
+                <div id="charts-container">
+                    <!-- Rendered by JS: two chart-row blocks (4 metrics each) -->
+                </div>
+            </div>
+
+            <div class="identity-deep-dive">
+                <h3 class="subsection-title">Stratified Identity Analysis</h3>
+                <p>
+                    Among the metrics above, <strong>FaceSim</strong> (face similarity) is arguably the most perceptually important — it measures how well a method preserves a person's identity after reposing. To quantify identity robustness under varying difficulty, we stratify FaceSim scores on the <strong>WPose (out-of-domain)</strong> test set by the magnitude of head-pose change between source and target (measured as the L2 distance of Euler-angle differences).
+                </p>
+                <div class="figure-container">
+                    <img src="static/images/trend_face_sim_raw.png" alt="Face Similarity trend across head pose angles" style="width: 100%; max-width: 780px; margin: 0 auto; display: block;">
+                    <p class="caption">
+                        <strong>Identity Preservation vs. Pose Difficulty.</strong> FaceSim scores stratified by pose-change magnitude. Pro-Pose closely tracks Ground Truth identity variance across all difficulty bins, while baselines degrade rapidly. With identity breakage defined as FaceSim &lt; 0.4, Pro-Pose fails in only 13.5% of cases vs. &gt; 97% for all baselines.
+                    </p>
+                </div>
+                <p>
+                    As the plot shows, <strong>Pro-Pose closely tracks the inherent identity variance of Ground Truth</strong> images across all pose-change bins, whereas all baselines exhibit rapid degradation as pose difficulty increases. Defining identity breakage as a FaceSim score below 0.4, Pro-Pose exhibits a failure rate of only <strong>13.5%</strong>, while all competing methods (LEFFA, MCLD, UniHuman, OnePoseTrans) fail to preserve identity in over <strong>97%</strong> of generated samples.
+                </p>
+            </div>
+
+        </section>
+
+        <section class="method section tab-panel" data-tab="method">
+            <h2 class="section-title">Method</h2>
+            
+            <div class="method-block">
+                <p>
+                    <strong>Overview:</strong> We address the challenge of synthesizing highly realistic and pose-controllable human avatars by proposing a unified framework capable of learning from both abundant single-view images and scarce paired data. This integration is achieved through a novel supervision strategy formulated directly in canonical UV texture space, which naturally disentangles pose from appearance.
+                </p>
+
+                <div class="figure-container">
+                    <img src="static/images/method_v17.png" alt="Overview of our Avatar Generation Framework">
+                    <p class="caption">
+                        <strong>Overview of our Avatar Generation Framework.</strong> Our approach leverages single-view datasets by operating in a canonical UV space, extracting UV texture and pose. <strong>Left (Paired Supervision):</strong> When ground-truth pose pairs are available, we condition the Flow Matching model on the partial UV texture, target pose, and face crop. <strong>Right (Single-View Self-Supervision):</strong> To prevent "pose leakage" from occlusion boundaries when training on single images, we introduce a <strong>Donor-based UV Reposing</strong> module. This synthetically re-poses the input texture using a random donor visibility mask, forcing the model to learn robust identity representations. Furthermore, we drop out the face crop condition in this branch to prevent trivial reconstruction via pixel-perfect information leakage.
+                    </p>
+                </div>
+            </div>
+
+            <div class="method-block">
+                <p>
+                    <strong>Donor-based UV Reposing:</strong> To mitigate pose leakage where the network learns shortcuts from occlusion boundaries, we introduce Donor-based UV Reposing. We mask the input texture using a visibility mask extracted from a randomly selected ‘donor’ image. This breaks the correlation between input texture boundaries and the target pose, forcing the generator to recover the original view through robust geometric inpainting.
+                </p>
+
+                <div class="figure-container">
+                    <img src="static/images/donor_masking_v6.png" alt="Pose Leakage Mitigation">
+                    <p class="caption">
+                        <strong>Pose Leakage Mitigation.</strong> (a) Standard partial textures <b>T<sub>p</sub></b> leak source pose information via occlusion boundaries, allowing trivial reconstruction shortcuts. (b) Generating pseudo-pairs via image-space rendering is computationally prohibitive for online training. Moreover, SMPL-X lacks fine details &mdash; such as hair &mdash; leading to unrealistic renderings. (c) Our <strong>Donor-based Reposing</strong> efficiently bypasses rendering by applying random donor masks <b>M<sub>p&#771;</sub></b> directly in UV space. This simulates novel occlusions, preventing leakage and forcing the network to learn robust geometric warping. <em>Note: To clearly visualize the subtle boundary differences (indicated by arrows), here we display a crop of just the face region from the full texture map; in practice, donor-reposing applies to all body parts.</em>
+                    </p>
+                </div>
+            </div>
+
+            <div class="method-block">
+                <p>
+                    <strong>Base Clothing Dataset:</strong> We utilize paired data from DeepFashion, unpaired single images from FFHQ, and commercial data derived from e-commerce websites. To ensure visual uniformity across these diverse sources, we generate the <strong>Base Clothing (BC)</strong> dataset using an identity-preserving I2I model (Gemini 2.5 Flash Image), standardizing subjects into black tank tops and shorts without altering their identity or pose.
+                </p>
+
+                <div class="figure-container">
+                    <img src="static/images/datasets_v6.png" alt="Base Clothing (BC) Standardization">
+                    <p class="caption">
+                        <strong>Base Clothing (BC) Standardization.</strong> We apply different preprocessing strategies based on the data. For DeepFashion and Commerce images, we generate the base garment while preserving pose and identity via pixel-aligned editing (Prompt V1). For FFHQ, we use generative outpainting to expand limited face crops into full-body samples (Prompt V2).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="identity-analysis section tab-panel" data-tab="identity-analysis">
+            <h2 class="section-title">Analysis of Identity Overfitting</h2>
+            
+            <div class="analysis-block">
+                <h3>Visual Confirmation of Identity Overfitting</h3>
+                <p>
+                    Our graph-based clustering analysis confirmed that <strong>DeepFashion</strong> is dominated by a small number of professional models <strong>(~100 clusters)</strong>. This lack of diversity leads to <strong>severe overfitting</strong> in <strong>paired-only</strong> models. As shown below, this bias is so strong that the model frequently collapses to a <strong>dominant training identity</strong> (highlighted in red), even overriding <strong>semantic cues like gender</strong>.
+                </p>
+
+                <div class="figure-container full-width-figure">
+                    <div class="dual-figure-row">
+                        <div class="dual-figure-item fig-item-1">
+                            <img src="static/images/top_100_grid_v6.jpg" alt="DeepFashion Identity Clusters">
+                            <div class="sub-caption">(a)</div>
+                        </div>
+                        <div class="dual-figure-item fig-item-2">
+                            <img src="static/images/ablation_full_v3.png" alt="Ablation Study">
+                            <div class="sub-caption">(b)</div>
+                        </div>
+                    </div>
+                    <p class="caption">
+                        <strong>(a)</strong> Top 100 identity clusters in DeepFashion, with the dominant identity highlighted. <strong>(b)</strong> Qualitative comparison showing how the Paired-Only model (middle column) often collapses to the specific male face highlighted on the left (e.g., row 2), whereas our full model (right column) preserves the correct identity.
+                    </p>
+                </div>
+            </div>
+
+            <div class="analysis-block">
+                <h3>Identity Analysis of Generated Images</h3>
+                <p>
+                    A primary motivation for our work is the <strong>limited identity diversity</strong> in existing paired datasets like <strong>DeepFashion</strong>, which contains only about <strong>100 unique identities</strong>. To diagnose the impact of this, we compared the face similarity between generated outputs and the training set. We found that <strong>models trained exclusively on paired data <span class="highlight-red">(shown in red)</span> exhibit high similarity to the training samples</strong>, indicating a tendency to <strong>memorize</strong> and "<strong>pull</strong>" novel identities toward the few known training subjects. In contrast, our <strong>full model</strong> <span class="highlight-blue">(shown in blue)</span>, <strong>which leverages abundant unpaired data, maintains lower similarity to the training set</strong>, demonstrating <strong>significantly better generalization</strong> to unseen identities.
+                </p>
+
+                <div class="figure-container">
+                    <img class="tall-image" src="static/images/face_similarity_analysis_v3.png" alt="Diagnosing Identity Overfitting">
+                    <p class="caption">
+                        <strong>Diagnosing Identity Overfitting via Cross-Dataset Generation.</strong> We evaluate the extent of identity overfitting by comparing the face similarity between images generated on the out-of-distribution WPose dataset and the identities present in the DeepFashion training set. Two Pro-Pose models are tested: Pro-Pose (paired only), trained on limited DeepFashion paired data, and Pro-Pose (unpaired + paired), trained on abundant unpaired data plus the limited paired data. The Pro-Pose (paired only) model exhibits a significantly higher face similarity to the DeepFashion training identities when reposing WPose identities. This result acts as a diagnostic, demonstrating that the paired-only model has overfit to the limited DeepFashion identities, causing it to generate new faces that are biased towards its training set, whereas the combined training approach ensures better generalization.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="citation section tab-panel" data-tab="citation">
+            <h2 class="section-title">Citation</h2>
+            <div class="bibtex">
+@misc{mishra2025proposeunpairedfullbodyportrait,
+      title={Pro-Pose: Unpaired Full-Body Portrait Synthesis via Canonical UV Maps}, 
+      author={Sandeep Mishra and Yasamin Jafarian and Andreas Lugmayr and Yingwei Li and Varsha Ramakrishnan and Srivatsan Varadharajan and Alan C. Bovik and Ira Kemelmacher-Shlizerman},
+      year={2025},
+      eprint={2512.17143},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2512.17143}, 
+}
+            </div>
+        </section>
+
+    </div>
+
+    <script src="static/js/main.js?v=202"></script>
+</body>
+</html>
