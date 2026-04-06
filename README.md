@@ -1,6 +1,6 @@
 # Pro-Pose: Unpaired Full-Body Portrait Synthesis via Canonical UV Maps
 
-Project page for our ECCV paper.
+Project page for Pro-Pose.
 
 ## Local Preview
 
