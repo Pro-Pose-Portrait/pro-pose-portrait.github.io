@@ -470,15 +470,12 @@ function renderCharts(datasetKey) {
                 const fill = document.createElement('div');
                 fill.className = 'metric-bar-fill';
 
-                // Width: wider = better, range 30%-100%
+                // Width: proportional to value (bigger value = bigger bar)
                 let pct;
-                if (mx === mn) {
-                    pct = 80;
+                if (mx === 0) {
+                    pct = 50;
                 } else {
-                    const norm = lowerBetter
-                        ? (mx - value) / (mx - mn)
-                        : (value - mn) / (mx - mn);
-                    pct = norm * 65 + 35;
+                    pct = (value / mx) * 65 + 35;
                 }
 
                 const isOurs = m.name === 'Pro-Pose';
